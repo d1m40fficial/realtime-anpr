@@ -1,0 +1,9 @@
+# Keep line endings stable across Windows/Linux contributors
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.gif binary
+*.jpg binary
+*.onnx binary
+*.pt binary

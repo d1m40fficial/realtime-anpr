@@ -1,0 +1,41 @@
+# Datasets and raw footage are never committed
+data/
+dataset/
+dataset*.zip
+clips/
+clips.zip
+*.avi
+*.mp4
+*.mkv
+*.mov
+!assets/demo.gif
+
+# Model weights that are downloaded on demand
+yolo11n.pt
+yolov8n.pt
+yolov8m.pt
+yolo12n.pt
+runs/
+*.onnx.data
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets
+.env
+*.pem
+*.key
+
+# OS / editors
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 560" width="1400" height="560" role="img" aria-label="ANPR pipeline architecture">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4A5568"/>
+    </marker>
+    <style>
+      .title { font: 700 15px "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #1A202C; }
+      .sub   { font: 400 11.5px "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #4A5568; }
+      .metric{ font: 600 11.5px "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+      .cap   { font: 700 11px "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #718096; letter-spacing: 1.4px; }
+      .note  { font: 400 12px "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #2D3748; }
+      .noteB { font: 700 12px "Segoe UI", "Helvetica Neue", Arial, sans-serif; fill: #2D3748; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="560" rx="18" fill="#FFFFFF"/>
+
+  <!-- top caption -->
+  <text class="cap" x="32" y="46">PER-FRAME CASCADE · ~21 MS / FRAME ON RTX 5070</text>
+  <line x1="32" y1="58" x2="1364" y2="58" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== box 1: source ===== -->
+  <g>
+    <rect x="32" y="86" width="196" height="120" rx="12" fill="#EDF2F7" stroke="#718096" stroke-width="1.5"/>
+    <text class="title" x="52" y="116">Video source</text>
+    <text class="sub" x="52" y="138">RTSP IP camera</text>
+    <text class="sub" x="52" y="156">or local video file</text>
+    <text class="metric" x="52" y="184" fill="#718096">2560×1920 · 25–60 FPS</text>
+  </g>
+
+  <!-- ===== box 2: vehicle detector ===== -->
+  <g>
+    <rect x="260" y="86" width="196" height="120" rx="12" fill="#EBF8FF" stroke="#2B6CB0" stroke-width="1.5"/>
+    <text class="title" x="280" y="116">Vehicle detector</text>
+    <text class="sub" x="280" y="138">YOLO11n · COCO</text>
+    <text class="sub" x="280" y="156">car · truck · bus · moto</text>
+    <text class="metric" x="280" y="184" fill="#2B6CB0">no fine-tuning needed</text>
+  </g>
+
+  <!-- ===== box 3: plate detector ===== -->
+  <g>
+    <rect x="488" y="86" width="196" height="120" rx="12" fill="#EBF8FF" stroke="#2B6CB0" stroke-width="1.5"/>
+    <text class="title" x="508" y="116">Plate detector</text>
+    <text class="sub" x="508" y="138">YOLO11n · fine-tuned</text>
+    <text class="sub" x="508" y="156">runs inside vehicle box</text>
+    <text class="metric" x="508" y="184" fill="#2B6CB0">P 0.988 · R 0.951</text>
+  </g>
+
+  <!-- ===== box 4: OCR ===== -->
+  <g>
+    <rect x="716" y="86" width="196" height="120" rx="12" fill="#FFFAF0" stroke="#DD6B20" stroke-width="1.5"/>
+    <text class="title" x="736" y="116">Plate OCR</text>
+    <text class="sub" x="736" y="138">FastPlate CCT-XS</text>
+    <text class="sub" x="736" y="156">ONNX · 9 slots · 140×70</text>
+    <text class="metric" x="736" y="184" fill="#DD6B20">99.09% · 2.1 ms</text>
+  </g>
+
+  <!-- ===== box 5: postprocess ===== -->
+  <g>
+    <rect x="944" y="86" width="196" height="120" rx="12" fill="#F0FFF4" stroke="#2F855A" stroke-width="1.5"/>
+    <text class="title" x="964" y="116">GOST repair</text>
+    <text class="sub" x="964" y="138">A123BC177 template</text>
+    <text class="sub" x="964" y="156">O↔0 · P↔C · RUS strip</text>
+    <text class="metric" x="964" y="184" fill="#2F855A">min-edit candidate</text>
+  </g>
+
+  <!-- ===== box 6: aggregation ===== -->
+  <g>
+    <rect x="1172" y="86" width="196" height="120" rx="12" fill="#FAF5FF" stroke="#6B46C1" stroke-width="1.5"/>
+    <text class="title" x="1192" y="116">Aggregation</text>
+    <text class="sub" x="1192" y="138">weighted voting</text>
+    <text class="sub" x="1192" y="156">over time window</text>
+    <text class="metric" x="1192" y="184" fill="#6B46C1">plate + event</text>
+  </g>
+
+  <!-- arrows -->
+  <line x1="228" y1="146" x2="254" y2="146" stroke="#4A5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="456" y1="146" x2="482" y2="146" stroke="#4A5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="684" y1="146" x2="710" y2="146" stroke="#4A5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="912" y1="146" x2="938" y2="146" stroke="#4A5568" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="1140" y1="146" x2="1166" y2="146" stroke="#4A5568" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- bottom caption -->
+  <text class="cap" x="32" y="256">TWO OPERATING MODES OVER THE SAME CORE</text>
+  <line x1="32" y1="268" x2="1364" y2="268" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- live mode -->
+  <g>
+    <rect x="32" y="292" width="650" height="222" rx="14" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text class="noteB" x="56" y="322">LIVE · RTSP stream</text>
+    <circle cx="62" cy="349" r="3" fill="#2B6CB0"/>
+    <text class="note" x="76" y="353">background reader keeps only the latest frame</text>
+    <circle cx="62" cy="377" r="3" fill="#2B6CB0"/>
+    <text class="note" x="76" y="381">TCP transport, auto-reconnect after 2 s on failure</text>
+    <circle cx="62" cy="405" r="3" fill="#2B6CB0"/>
+    <text class="note" x="76" y="409">every 2nd frame → 12–15 FPS analysed at 25 FPS input</text>
+    <circle cx="62" cy="433" r="3" fill="#2B6CB0"/>
+    <text class="note" x="76" y="437">30-reading sliding window, 3 matching votes confirm</text>
+    <circle cx="62" cy="461" r="3" fill="#2B6CB0"/>
+    <text class="note" x="76" y="465">stable plate → barrier signal before the car stops</text>
+  </g>
+
+  <!-- batch mode -->
+  <g>
+    <rect x="714" y="292" width="650" height="222" rx="14" fill="#F7FAFC" stroke="#A0AEC0" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text class="noteB" x="738" y="322">OFFLINE · clip benchmark</text>
+    <circle cx="744" cy="349" r="3" fill="#6B46C1"/>
+    <text class="note" x="758" y="353">one file = one entry / exit event, ground truth in name</text>
+    <circle cx="744" cy="377" r="3" fill="#6B46C1"/>
+    <text class="note" x="758" y="381">early stop once a valid plate wins 3 votes</text>
+    <circle cx="744" cy="405" r="3" fill="#6B46C1"/>
+    <text class="note" x="758" y="409">two-tier candidate pool: GOST-valid first, then loose</text>
+    <circle cx="744" cy="433" r="3" fill="#6B46C1"/>
+    <text class="note" x="758" y="437">confidence + plate-area weighted character voting</text>
+    <circle cx="744" cy="461" r="3" fill="#6B46C1"/>
+    <text class="note" x="758" y="465">reproduces the 91-clip evaluation from the README</text>
+  </g>
+</svg>
